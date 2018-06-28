@@ -60,10 +60,12 @@ class TeamGreenSimpleTrader(ITrader):
                 if company_a_gain > company_b_gain:
                     result.buy(CompanyEnum.COMPANY_A, bought_a_shares)
                     remainingCash = cash - bought_a_shares * company_a_value
-                    result.buy(CompanyEnum.COMPANY_B, int(remainingCash / company_b_value))
+                    if company_b_difference > 0:
+                        result.buy(CompanyEnum.COMPANY_B, int(remainingCash / company_b_value))
                 else:
                     result.buy(CompanyEnum.COMPANY_B, bought_b_shares)
                     remainingCash = cash - bought_b_shares * company_b_value
-                    result.buy(CompanyEnum.COMPANY_A, int(remainingCash / company_a_value))
+                    if company_a_difference > 0:
+                        result.buy(CompanyEnum.COMPANY_A, int(remainingCash / company_a_value))
 
         return result
