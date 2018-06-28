@@ -43,21 +43,18 @@ class TeamRedSimpleTrader(ITrader):
         result.sell(CompanyEnum.COMPANY_A, portfolio.get_amount(CompanyEnum.COMPANY_A))
         result.sell(CompanyEnum.COMPANY_B, portfolio.get_amount(CompanyEnum.COMPANY_B))
 
-        if (self.stock_a_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_A])
-                >self.stock_b_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_B])):
-            # TODO: Calculate Buyable Amount for A
-            result.buy(CompanyEnum.COMPANY_A, self.getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_A))
-        else:
-            # TODO: Calculate Buyable Amount for B
-            result.buy(CompanyEnum.COMPANY_B, self.getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_B))
+        best_stock = self.__get_best_stock(stock_market_data, self.stock_a_predictor, self.stock_b_predictor)
+        if best_stock is not None:
+            result.buy(best_stock, self.get_buyable_amount(current_portfolio_value, stock_market_data, best_stock))
 
         return result
 
-    def getBuyableAmount(self, current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
+    @staticmethod
+    def get_buyable_amount(current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
         return int(current_portfolio_value / stock_market_data.get_most_recent_price(companyEnum))
     
     @staticmethod
-    def __getBestStock(stock_market_data: StockMarketData, stock_a_predictor: IPredictor, stock_b_predictor: IPredictor) -> CompanyEnum:
+    def __get_best_stock(stock_market_data: StockMarketData, stock_a_predictor: IPredictor, stock_b_predictor: IPredictor) -> CompanyEnum:
         deltaA = stock_a_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_A]) - stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_A)
         deltaB = stock_b_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_B]) - stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_B)
         if deltaA <= 0 and deltaB <= 0:
