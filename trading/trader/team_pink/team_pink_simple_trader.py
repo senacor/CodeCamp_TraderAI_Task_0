@@ -8,7 +8,7 @@ from model.StockMarketData import StockMarketData
 from model.ITrader import ITrader
 from model.Order import OrderList
 from model.IPredictor import IPredictor
-
+from model.CompanyEnum import CompanyEnum
 
 class TeamPinkSimpleTrader(ITrader):
     """
@@ -37,6 +37,33 @@ class TeamPinkSimpleTrader(ITrader):
         """
 
         result = OrderList()
+
+        companyAData = stock_market_data[CompanyEnum.COMPANY_A]
+        companyBData = stock_market_data[CompanyEnum.COMPANY_B]
+
+        lastStockValueA = stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_A)
+        lastStockValueB = stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_B)
+
+        futureStockValueA = self.stock_a_predictor.doPredict(companyAData)
+        futureStockValueB = self.stock_b_predictor.doPredict(companyBData)
+
+        stockValueDifferenceA = futureStockValueA - lastStockValueA
+        stockValueDifferenceB = futureStockValueB - lastStockValueB
+
+        stockAmountA = portfolio.get_or_insert(CompanyEnum.COMPANY_A).amount
+        stockAmountB = portfolio.get_or_insert(CompanyEnum.COMPANY_B).amount
+
+        if (stockAmountA != 0):
+            result.sell(CompanyEnum.COMPANY_A, stockAmountA)
+        if (stockAmountB != 0):
+            result.sell(CompanyEnum.COMPANY_B, stockAmountB)
+
+        if (stockValueDifferenceA > stockValueDifferenceB):
+            buyAmount = current_portfolio_value // lastStockValueA
+            result.buy(CompanyEnum.COMPANY_A, buyAmount)
+        else:
+            buyAmount = current_portfolio_value // lastStockValueB
+            result.buy(CompanyEnum.COMPANY_B, buyAmount)
 
         # TODO: implement trading logic
 
