@@ -54,5 +54,5 @@ class TeamRedSimpleTrader(ITrader):
         return result
 
     def getBuyableAmount(self, current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
-        return round(current_portfolio_value / stock_market_data.get_most_recent_price(companyEnum))
+        return int(current_portfolio_value / stock_market_data.get_most_recent_price(companyEnum))
 
