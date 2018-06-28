@@ -154,7 +154,7 @@ class Portfolio:
                     updated_portfolio.cash -= trade_volume
                     available_cash -= trade_volume
                 else:
-                    logger.warning(f"No sufficient cash reserve ({updated_portfolio.cash}) for planned transaction "
+                    logger.warning(f"No sufficient cash reserve ({available_cash}) for planned transaction "
                                    f"with volume of {trade_volume}")
             elif order.action is OrderType.SELL:
                 logger.debug(f"Selling {amount} shares of {share.company_enum} with individual value of "
