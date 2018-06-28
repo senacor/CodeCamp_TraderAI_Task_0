@@ -131,7 +131,7 @@ class Portfolio:
 
         available_cash = updated_portfolio.cash
 
-        for order in iter(order_list):
+        for order in order_list:
             company_enum = order.shares.company_enum
 
             current_date = stock_market_data.get_most_recent_trade_day()
@@ -164,6 +164,7 @@ class Portfolio:
                 if share.amount >= amount:
                     share.amount -= amount
                     updated_portfolio.cash += trade_volume
+                    available_cash += trade_volume
                 else:
                     logger.warning(f"Not sufficient shares in portfolio ({amount}) for planned sale of {share.amount} "
                                    f"shares")
