@@ -63,22 +63,32 @@ class TeamBlueSimpleTrader(ITrader):
             if future_factor_company_a > future_factor_company_b:
                 buy_company = CompanyEnum.COMPANY_A
                 sell_company = CompanyEnum.COMPANY_B
+                sell_factor = future_factor_company_b
             else:
                 buy_company = CompanyEnum.COMPANY_B
                 sell_company = CompanyEnum.COMPANY_A
+                sell_factor = future_factor_company_a
 
-
+            # Verkaufe Stock mit geringerer Performance
             amout_sell = portfolio.get_amount(sell_company)
             result.sell(sell_company, amout_sell)
 
+            # Kaufe Stock mit höherer Performance
             current_price_sell_company = stock_market_data.get_most_recent_price(sell_company)
             current_price_buy_company = stock_market_data.get_most_recent_price(buy_company)
-
             cash_after_sell = portfolio.cash + portfolio.get_amount(sell_company)*current_price_sell_company
-
             amount_buy = math.floor(cash_after_sell/ current_price_buy_company)
 
             result.buy(buy_company, amount_buy)
+
+            # Kaufe Zusatz-Stock von schlechterer Aktie
+            if sell_factor > 1:
+                cash_after_buy = cash_after_sell - amount_buy*current_price_buy_company
+                amount_buy_2 = math.floor(cash_after_buy/ current_price_sell_company)
+                if amount_buy_2>0:
+                    print(f"YEAH!")
+                    result.buy(sell_company, amount_buy_2)
+
 
             # print('--')
             # print(portfolio)
