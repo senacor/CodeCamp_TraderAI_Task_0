@@ -7,7 +7,7 @@ Module for testing the SimpleTrader.
 """
 import unittest
 from model.Portfolio import Portfolio
-from model.Order import CompanyEnum
+from model.Order import CompanyEnum, OrderList
 
 from utils import read_stock_market_data
 from predicting.predictor.reference.perfect_predictor import PerfectPredictor

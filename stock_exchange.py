@@ -21,11 +21,11 @@ if __name__ == "__main__":
         #('Simple Trader (perfect prediction)', Traders.SimpleTrader_with_perfect_prediction()), #Reference trader
          
         # Code-Camp Task 0 traders
-        ('Team Blue Simple Trader (perfect prediction)', Traders.TeamBlueSimpleTrader_with_perfect_prediction()),
-        ('Team Green Simple Trader (perfect prediction)', Traders.TeamGreenSimpleTrader_with_perfect_prediction()),
-        ('Team Pink Simple Trader (perfect prediction)', Traders.TeamPinkSimpleTrader_with_perfect_prediction()),
+        #('Team Blue Simple Trader (perfect prediction)', Traders.TeamBlueSimpleTrader_with_perfect_prediction()),
+        #('Team Green Simple Trader (perfect prediction)', Traders.TeamGreenSimpleTrader_with_perfect_prediction()),
+        #('Team Pink Simple Trader (perfect prediction)', Traders.TeamPinkSimpleTrader_with_perfect_prediction()),
         ('Team Red Simple Trader (perfect prediction)', Traders.TeamRedSimpleTrader_with_perfect_prediction()),
-                                    
+
     ]
 
     # Define portfolios for the traders and create a portfolio/trader mapping
