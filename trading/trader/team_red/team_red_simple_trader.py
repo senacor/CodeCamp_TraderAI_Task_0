@@ -3,6 +3,7 @@ Created on 08.11.2017
 
 @author: jtymoszuk
 """
+from model.CompanyEnum import CompanyEnum
 from model.Portfolio import Portfolio
 from model.StockMarketData import StockMarketData
 from model.ITrader import ITrader
@@ -36,7 +37,19 @@ class TeamRedSimpleTrader(ITrader):
         """
 
         result = OrderList()
+        """
+        Sell Everything
+        """
+        result.sell(CompanyEnum.COMPANY_A, portfolio.get_amount(CompanyEnum.COMPANY_A))
+        result.sell(CompanyEnum.COMPANY_B, portfolio.get_amount(CompanyEnum.COMPANY_B))
 
-        #TODO: implement trading logic
+        if (self.stock_a_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_A])
+                >self.stock_b_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_B])):
+            # TODO: Calculate Buyable Amount for A
+          result.buy(CompanyEnum.COMPANY_A, 10)
+        else:
+            # TODO: Calculate Buyable Amount for B
+          result.buy(CompanyEnum.COMPANY_B, 10)
+
 
         return result
