@@ -226,7 +226,7 @@ class Portfolio:
         """
         if order is not None:
             if order.action == OrderType.BUY:
-                price_to_pay = most_recent_price_company * order.shares
+                price_to_pay = most_recent_price_company * order.shares.amount
 
                 current_cash = current_cash - price_to_pay
                 if current_cash < 0:
@@ -236,7 +236,7 @@ class Portfolio:
                     return False, current_cash
 
             elif order.action == OrderType.SELL:
-                if order.shares > self.get_amount(company_enum):
+                if order.shares.amount > self.get_amount(company_enum):
                     return False
             else:
                 raise ValueError(f'Action for tradingActionForCompanyB is not valid: {order}')
