@@ -55,4 +55,14 @@ class TeamRedSimpleTrader(ITrader):
 
     def getBuyableAmount(self, current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
         return int(current_portfolio_value / stock_market_data.get_most_recent_price(companyEnum))
-
+    
+    @staticmethod
+    def __getBestStock(stock_market_data: StockMarketData, stock_a_predictor: IPredictor, stock_b_predictor: IPredictor) -> CompanyEnum:
+        deltaA = stock_a_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_A]) - stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_A)
+        deltaB = stock_b_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_B]) - stock_market_data.get_most_recent_price(CompanyEnum.COMPANY_B)
+        if deltaA <= 0 and deltaB <= 0:
+            return None
+        if deltaA >= deltaB:
+            return CompanyEnum.COMPANY_A
+        else:
+            return CompanyEnum.COMPANY_B
