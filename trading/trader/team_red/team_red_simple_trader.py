@@ -46,13 +46,13 @@ class TeamRedSimpleTrader(ITrader):
         if (self.stock_a_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_A])
                 >self.stock_b_predictor.doPredict(stock_market_data[CompanyEnum.COMPANY_B])):
             # TODO: Calculate Buyable Amount for A
-            result.buy(CompanyEnum.COMPANY_A, getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_A))
+            result.buy(CompanyEnum.COMPANY_A, self.getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_A))
         else:
             # TODO: Calculate Buyable Amount for B
-            result.buy(CompanyEnum.COMPANY_B, getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_B))
+            result.buy(CompanyEnum.COMPANY_B, self.getBuyableAmount(current_portfolio_value, stock_market_data, CompanyEnum.COMPANY_B))
 
         return result
 
-    def __getBuyableAmount(self, current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
+    def getBuyableAmount(self, current_portfolio_value, stock_market_data, companyEnum: CompanyEnum) -> int:
         return round(current_portfolio_value / stock_market_data.get_most_recent_price(companyEnum))
 
